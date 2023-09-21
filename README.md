@@ -47,6 +47,20 @@ Em desenvolvimento...
 python Main.py
 ```
 
+## Como Jogar - Botões e Recursos
+Quando você executar o PythonChess, terá acesso a vários botões e recursos na interface gráfica. Aqui está o significado de cada um deles:
+
+Reiniciar partida: Inicia um novo jogo de xadrez.
+Salvar jogo: Permite salvar um estado do jogo. Em desenvolvimento... 
+Carregar Jogo: Permite carregar um jogo salvo anteriormente. Em desenvolvimento...
+Desfazer Jogada: Desfaz o último movimento no jogo.
+Sugerir jogada: Ativa o motor de xadrez Stockfish para te indicar a melhor jogada.
+Histórico de Movimentos: Exibe o histórico completo de todos os movimentos realizados durante a partida, onde na esquerda é das peças brancas.
+Tamanho da Tela: Permite redimensionar a janela para tamanhos predefinidos.
+Sair do jogo: Fecha o jogo PythonChess.
+Jogar Sozinho: O motor Stockfish irá fazer todas as jogadas baseadas na melhor possivel, sem interações do usuário.
+Diminuir e Aumentar tempo: Modifica a profundidade do tempo que o Stockfish irá escolher o melhor movimento.
+
 ## Contribuindo
 
 Se você gostaria de contribuir para este projeto, por favor siga as diretrizes de contribuição descritas em [CONTRIBUTING.md](CONTRIBUTING.md).
