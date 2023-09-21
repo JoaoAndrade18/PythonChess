@@ -16,6 +16,8 @@ Este é um projeto de xadrez em Python que utiliza a biblioteca Tkinter para a i
 ## Capturas de Tela
 
 ![Captura de Tela 1](src/images/screenshot1.png)
+<img src="src/images/screenshot1.png" alt="Captura de Tela 1" width="300" height="200">
+
 ![Captura de Tela 1](src/images/screenshot2.png)
 
 ## Como Jogar
