@@ -25,18 +25,24 @@ Este é um projeto de xadrez em Python que utiliza a biblioteca Tkinter para a i
 ```markdown
 git clone https://github.com/JoaoAndrade18/PythonChess.git
 ```
+
 2. **Instale as dependências:**
 
+```markdown
 pip install -r requirements.txt
+```
 
 3. Compile o Stockfish:
 
+```markdown
 Em desenvolvimento...
+```
 
 4. Execute o Main.py
 
+```markdown
 python Main.py
-<span class="copy-button" data-clipboard-text="python Main.py">Copiar</span>
+```
 
 ## Contribuindo
 
