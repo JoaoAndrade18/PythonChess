@@ -25,7 +25,7 @@ Este é um projeto de xadrez em Python que utiliza a biblioteca Tkinter para a i
 ```markdown
 git clone https://github.com/JoaoAndrade18/PythonChess.git
 <span class="copy-button" data-clipboard-text="git clone https://github.com/JoaoAndrade18/PythonChess.git">Copiar</span>
-
+```
 2. **Instale as dependências:**
 
 pip install -r requirements.txt
