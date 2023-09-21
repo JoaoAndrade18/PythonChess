@@ -31,6 +31,9 @@ initial_fen = board.fen()
 # Histórico de movimentos
 move_history = []
 
+# Mantenha um registro dos últimos movimentos do jogador
+player_last_moves = []
+
 # Função para obter a melhor jogada do Stockfish
 def get_best_move(board, time_limit):
     result = engine.play(board, chess.engine.Limit(time=float(time_limit)))
@@ -52,7 +55,7 @@ def create_chessboard_image(board, size):
 
             piece = board.piece_at(chess.square(file, 7 - rank))
             if piece is not None:
-                piece_image = Image.open(f".\\Github\\pieces\\{piece.symbol()}_{'white' if piece.color == chess.WHITE else 'black'}.png")
+                piece_image = Image.open(f".\\Scripts\\TCC_stockfish\\pieces\\{piece.symbol()}_{'white' if piece.color == chess.WHITE else 'black'}.png")
                 piece_image = piece_image.resize((square_size, square_size))
                 image.paste(piece_image, (file * square_size, rank * square_size))
 
@@ -74,6 +77,7 @@ def set_board_size(size):
     canvas.config(width=board_size, height=board_size)
     original_window_size = (board_size, board_size)  # Atualiza o tamanho original da janela
     update_board(board_size)
+    position_coordinate_labels()  # Chame a função para posicionar os rótulos de coordenadas
 
 # Função para restaurar o tabuleiro para a posição inicial
 def restore_board():
@@ -95,11 +99,23 @@ def show_move_history():
     history_window = tk.Toplevel(root)
     history_window.title("Histórico de Movimentos")
 
-    text = tk.Text(history_window)
-    text.pack()
+    # Crie duas áreas de texto, uma para os movimentos das brancas e outra para os movimentos das pretas
+    white_moves_text = tk.Text(history_window, width=30)
+    black_moves_text = tk.Text(history_window, width=30)
+    
+    white_moves_text.pack(side=tk.LEFT, padx=5)
+    black_moves_text.pack(side=tk.RIGHT, padx=5)
+
+    # Use uma variável para alternar entre as cores
+    is_white_turn = True
 
     for i, move in enumerate(move_history, start=1):
-        text.insert(tk.END, f"{i}. {move}\n")
+        if is_white_turn:
+            white_moves_text.insert(tk.END, f"{i}. {move}\n")
+        else:
+            black_moves_text.insert(tk.END, f"{i}. {move}\n")
+        is_white_turn = not is_white_turn
+
 
 # Função para enviar a jogada do jogador
 def submit_player_move():
@@ -158,9 +174,115 @@ def play_auto_game():
         root.update_idletasks()  # Atualize a interface gráfica para que a janela seja responsiva
         time.sleep(1)
 
+# Função para criar um rótulo de coordenadas
+def create_coordinate_label(text, x, y):
+    label = ttk.Label(canvas, text=text, font=("Helvetica", 12))
+    label.place(x=x, y=y)  
+
+def position_coordinate_labels():
+    # Exclua todos os rótulos de coordenadas existentes
+    for label in canvas.winfo_children():
+        label.destroy()
+
+    for i, rank in enumerate(reversed(chess.RANK_NAMES), start=1):
+        factor = board_size / 8  # Fator de escala com base no tamanho do tabuleiro
+        y_offset = 0
+        if board_size == 450:
+            y_offset = 23
+        elif board_size == 600:
+            y_offset = 23
+        elif board_size == 800:
+            y_offset = 23.5
+        create_coordinate_label(rank, 0, i * factor - y_offset)
+    
+    # Adicione as coordenadas acima do tabuleiro
+    for i, file in enumerate(chess.FILE_NAMES, start=1):
+        factor = board_size / 8  # Fator de escala com base no tamanho do tabuleiro
+        y_offset = 0
+        if board_size == 450:
+            y_offset = 14
+        elif board_size == 600:
+            y_offset = 14
+        elif board_size == 800:
+            y_offset = 14.5
+        create_coordinate_label(file, i * factor - y_offset, 0)
+
+# Função para sugerir a melhor jogada
+def suggest_best_move():
+    best_move = get_best_move(board, time_limit)
+    print("Melhor jogada sugerida pelo Stockfish:", best_move.uci())
+    
+def disable_window_close():
+    pass
+
+# Função para redirecionar a saída do terminal para a caixa de texto
+def redirect_output():
+    import sys
+
+    class OutputRedirector(object):
+        def __init__(self, text_widget):
+            self.text_space = text_widget
+
+        def write(self, string):
+            self.text_space.insert(tk.END, string)
+            self.text_space.see(tk.END)  # Role a caixa de texto para o final
+
+    sys.stdout = OutputRedirector(output_text)
+
+# Função para verificar se o jogador está usando uma jogada similar ao Stockfish
+def check_for_tool_use(player_move):
+    global player_last_moves, engine
+
+    player_last_moves.append(player_move)
+    # Mantenha apenas os últimos N movimentos do jogador para análise
+    N = 5  # Você pode ajustar o valor N conforme necessário
+
+    if len(player_last_moves) >= N:
+        # Obtenha as últimas N jogadas do jogador
+        recent_moves = player_last_moves[-N:]
+
+        # Verifique se as últimas N jogadas do jogador são muito semelhantes às jogadas recomendadas pelo Stockfish
+        is_tool_use = True
+        for move in recent_moves:
+            best_stockfish_move = get_best_move(board, time_limit)
+            if move != best_stockfish_move.uci():
+                is_tool_use = False
+                break
+
+        if is_tool_use:
+            print("O jogador está usando uma jogada muito similar ao Stockfish. Suspeita de uso de ferramenta.")
+            # Mude a cor da caixa de entrada de texto para vermelho
+            player_move_entry.configure({"background": "red"})
+        else:
+            print("O jogador não está usando uma jogada muito similar ao Stockfish.")
+            # Restaure a cor padrão da caixa de entrada de texto
+            player_move_entry.configure({"background": "white"})
+
+# Função para desfazer o último movimento
+def undo_last_move():
+    global board, move_history
+
+    if len(move_history) >= 2:
+        # Desfaça o último movimento do jogador
+        last_player_move = move_history.pop()
+        board.pop()
+        
+        # Desfaça o último movimento da máquina
+        last_computer_move = move_history.pop()
+        board.pop()
+        
+        # Atualize a exibição do tabuleiro
+        update_board(board_size)
+        position_coordinate_labels()
+
 # Configuração da interface gráfica
 root = tk.Tk()
 root.title("Xadrez com Stockfish")
+
+# Crie uma nova janela para os resultados
+results_window = tk.Toplevel(root)
+results_window.title("Resultados do Terminal")
+results_window.protocol("WM_DELETE_WINDOW", disable_window_close)  # impedi-lo de fechar a janela
 
 canvas = tk.Canvas(root, width=board_size, height=board_size)
 canvas.pack()
@@ -170,6 +292,10 @@ update_board(board_size)
 # Caixa de entrada para a jogada do jogador
 player_move_entry = tk.Entry(root)
 player_move_entry.pack()
+
+# Vincule a função `process_enter` à tecla Enter
+player_move_entry.bind('<Return>', lambda event=None: submit_player_move(), check_for_tool_use(player_move_entry.get()))
+
 
 # Botão para enviar a jogada do jogador
 submit_button = ttk.Button(root, text="Enviar Jogada", command=submit_player_move)
@@ -182,7 +308,7 @@ root.config(menu=menu)
 # Menu Tamanho da Tela
 size_menu = tk.Menu(menu)
 menu.add_cascade(label="Tamanho da Tela", menu=size_menu)
-size_menu.add_command(label="Pequeno", command=lambda: set_board_size(400))
+size_menu.add_command(label="Pequeno", command=lambda: set_board_size(450))
 size_menu.add_command(label="Médio", command=lambda: set_board_size(600))
 size_menu.add_command(label="Grande", command=lambda: set_board_size(800))
 size_menu.add_separator()
@@ -198,18 +324,32 @@ menu.add_command(label="Sair do Jogo", command=quit_game)
 
 # Botões para aumentar e diminuir o tempo limite
 increase_time_button = ttk.Button(root, text="Aumentar Tempo", command=increase_time_limit)
-increase_time_button.pack()
+increase_time_button.pack(side="right")
 decrease_time_button = ttk.Button(root, text="Diminuir Tempo", command=decrease_time_limit)
-decrease_time_button.pack()
+decrease_time_button.pack(side="left")
 
 # Rótulo para exibir o tempo atual
 time_label = ttk.Label(root, text=f"Tempo Limite da Máquina: {time_limit} segundos")
-time_label.pack()
+time_label.pack(side="bottom")
 
 # Botão para alternar entre os modos de jogo (Jogador vs. Máquina e Automático)
 auto_mode_button = ttk.Button(root, text="Jogar Sozinho", command=toggle_auto_mode)
-auto_mode_button.pack()
+auto_mode_button.pack(fill="x")
 
-print("Tempo limite da máquina:", time_limit)
+# botao para sugerir a melhor jogada
+suggest_move_button = ttk.Button(root, text="Sugerir Jogada", command=suggest_best_move)
+suggest_move_button.pack()
+
+# Crie uma caixa de texto para exibir os resultados
+output_text = tk.Text(results_window)
+output_text.pack()
+
+# Adicione um botão "Desfazer" à interface gráfica
+undo_button = ttk.Button(root, text="Desfazer Jogada", command=undo_last_move)
+undo_button.pack()
+
+position_coordinate_labels()
+
+redirect_output()
 
 root.mainloop()
