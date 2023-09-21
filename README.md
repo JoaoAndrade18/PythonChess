@@ -20,10 +20,11 @@ Este é um projeto de xadrez em Python que utiliza a biblioteca Tkinter para a i
 
 ## Como Jogar
 
-1. Clone o repositório:
+1. **Clone o repositório:**
 
-https://github.com/JoaoAndrade18/PythonChess.git
-
+```markdown
+git clone https://github.com/JoaoAndrade18/PythonChess.git
+<span class="copy-button" data-clipboard-text="git clone https://github.com/JoaoAndrade18/PythonChess.git">Copiar</span>
 
 2. **Instale as dependências:**
 
@@ -36,6 +37,7 @@ Em desenvolvimento...
 4. Execute o Main.py
 
 python Main.py
+<span class="copy-button" data-clipboard-text="python Main.py">Copiar</span>
 
 ## Contribuindo
 
