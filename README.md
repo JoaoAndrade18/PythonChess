@@ -65,7 +65,7 @@ Quando você executar o PythonChess, terá acesso a vários botões e recursos n
   
 - **Tamanho da Tela:** Permite redimensionar a janela para tamanhos predefinidos.
   
-- **Sair do jogo:** Fecha o jogo PythonChess.
+- **Sair do jogo:** Fecha o jogo PythonChess de forma adequada.
   
 - **Jogar Sozinho:** O motor Stockfish fará todas as jogadas com base na melhor escolha possível, sem interações do usuário.
   
