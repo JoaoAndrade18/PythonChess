@@ -27,6 +27,7 @@ https://github.com/JoaoAndrade18/PythonChess.git
 
 2. Instale as dependências:
 
+pip install -r requirements.txt
 
 3. Compile o Stockfish:
 
