@@ -25,7 +25,7 @@ Este é um projeto de xadrez em Python que utiliza a biblioteca Tkinter para a i
 https://github.com/JoaoAndrade18/PythonChess.git
 
 
-2. Instale as dependências:
+2. **Instale as dependências:**
 
 pip install -r requirements.txt
 
@@ -35,6 +35,7 @@ Em desenvolvimento...
 
 4. Execute o Main.py
 
+python Main.py
 
 ## Contribuindo
 
