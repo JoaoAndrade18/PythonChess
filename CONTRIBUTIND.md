@@ -8,18 +8,18 @@ Existem muitas maneiras de contribuir para o PythonChess, seja relatando problem
 
 ### Relatando Problemas
 
-- Se você encontrar um problema ou bug no jogo, por favor, [abra uma issue](https://github.com/seu-usuario/PythonChess/issues) descrevendo o problema em detalhes.
+- Se você encontrar um problema ou bug no jogo, por favor, [abra uma issue](https://github.com/JoaoAndrade18/PythonChess/issues) descrevendo o problema em detalhes.
 - Certifique-se de incluir informações sobre o ambiente em que você encontrou o problema (versão do Python, sistema operacional, etc.).
 
 ### Propondo Melhorias
 
-- Se você tem uma ideia de como melhorar o PythonChess, sinta-se à vontade para [abrir uma issue](https://github.com/seu-usuario/PythonChess/issues) descrevendo sua sugestão.
+- Se você tem uma ideia de como melhorar o PythonChess, sinta-se à vontade para [abrir uma issue](https://github.com/JoaoAndrade18/PythonChess/issues) descrevendo sua sugestão.
 - Se possível, inclua informações adicionais, como uma descrição detalhada da melhoria, capturas de tela ou desenhos conceituais.
 
 ### Enviando Pull Requests (PRs)
 
 - Se você deseja contribuir com código, siga estas etapas:
-  1. Fork o repositório [PythonChess](https://github.com/seu-usuario/PythonChess) para o seu próprio perfil.
+  1. Fork o repositório [PythonChess](https://github.com/JoaoAndrade18/PythonChess) para o seu próprio perfil.
   2. Clone o seu fork para o seu ambiente de desenvolvimento local.
   3. Crie uma nova branch para sua contribuição: `git checkout -b minha-contribuicao`.
   4. Faça as alterações desejadas e comunique claramente o propósito das mudanças no PR.
