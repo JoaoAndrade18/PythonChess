@@ -1,6 +1,6 @@
 # PythonChess
 
-![Chess Board](chess_board.png)
+![Chess Board](src/images/logo.png)
 
 Este é um projeto de xadrez em Python que utiliza a biblioteca Tkinter para a interface gráfica e o motor de xadrez Stockfish para as jogadas.
 
@@ -15,8 +15,8 @@ Este é um projeto de xadrez em Python que utiliza a biblioteca Tkinter para a i
 
 ## Capturas de Tela
 
-![Captura de Tela 1](screenshot1.png)
-![Captura de Tela 2](screenshot2.png)
+![Captura de Tela 1](src/images/screenshot1.png)
+![Captura de Tela 1](src/images/screenshot2.png)
 
 ## Como Jogar
 
