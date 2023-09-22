@@ -5,10 +5,26 @@ from PIL import Image, ImageTk, ImageDraw
 import threading
 import time
 from tkinter import ttk
+from detect_os import detect_operating_system
 
-# Configuração do Stockfish
-stockfish_path = ".\\stockfish\\stockfish-windows-x86-64-avx2.exe"
-engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+def stockfish_engine():
+    os = detect_operating_system
+    if os == "Windows":
+        stockfish_path = ".\\bin\\stockfish.exe"
+    else:
+        stockfish_path = "./bin/stockfish"
+
+    engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+    return engine
+
+def chess_images():
+    os = detect_operating_system
+    if os == "Windows":
+        chess_images_path = ".\\assets\\pieces\\"
+    else:
+        chess_images_path = "./assets/pieces/"
+
+    return chess_images_path
 
 # Tamanho inicial do tabuleiro
 board_size = 450
@@ -31,6 +47,8 @@ initial_fen = board.fen()
 # Histórico de movimentos
 move_history = []
 
+engine = stockfish_engine()
+
 # Função para obter a melhor jogada do Stockfish
 def get_best_move(board, time_limit):
     result = engine.play(board, chess.engine.Limit(time=float(time_limit)))
@@ -40,6 +58,7 @@ def get_best_move(board, time_limit):
 def create_chessboard_image(board, size):
     square_size = size // 8  # Tamanho de cada quadrado do tabuleiro
     image = Image.new("RGB", (size, size))
+    images_path = chess_images()
 
     for rank in range(8):
         for file in range(8):
@@ -52,7 +71,7 @@ def create_chessboard_image(board, size):
 
             piece = board.piece_at(chess.square(file, 7 - rank))
             if piece is not None:
-                piece_image = Image.open(f".\\Github\\pieces\\{piece.symbol()}_{'white' if piece.color == chess.WHITE else 'black'}.png")
+                piece_image = Image.open(f"{images_path}{piece.symbol()}_{'white' if piece.color == chess.WHITE else 'black'}.png")
                 piece_image = piece_image.resize((square_size, square_size))
                 image.paste(piece_image, (file * square_size, rank * square_size))
 
