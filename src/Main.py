@@ -5,10 +5,26 @@ from PIL import Image, ImageTk, ImageDraw
 import threading
 import time
 from tkinter import ttk
+from detect_os import detect_operating_system
 
-# Configuração do Stockfish
-stockfish_path = ".\\stockfish\\stockfish-windows-x86-64-avx2.exe"
-engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+def stockfish_engine():
+    os = detect_operating_system
+    if os == "Windows":
+        stockfish_path = ".\\bin\\stockfish.exe"
+    else:
+        stockfish_path = "./bin/stockfish"
+
+    engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+    return engine
+
+def chess_images():
+    os = detect_operating_system
+    if os == "Windows":
+        chess_images_path = ".\\assets\\pieces\\"
+    else:
+        chess_images_path = "./assets/pieces/"
+
+    return chess_images_path
 
 # Tamanho inicial do tabuleiro
 board_size = 450

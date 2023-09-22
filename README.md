@@ -6,18 +6,18 @@ Este é um projeto de xadrez em Python que utiliza a biblioteca Tkinter para a i
 
 ## Recursos
 
-- Interface gráfica intuitiva.
-- Suporte para jogar contra um oponente humano ou contra o Stockfish. Em desenvolvimento...
-- Análise de jogadas com a ajuda do Stockfish.
-- Histórico de movimentos.
-- Contagem de movimentos, xeques, xeque-mate e empates. Em desenvolvimento...
-- Personalização do nível de dificuldade do Stockfish. 
+- [x] Interface gráfica intuitiva.
+- [ ]  Suporte para jogar contra um oponente humano ou contra o Stockfish.
+- [x]  Análise de jogadas com a ajuda do Stockfish.
+- [x]  Histórico de movimentos.
+- [ ]  Contagem de movimentos, xeques, xeque-mate e empates.æ
+- [x]  Personalização do nível de dificuldade do Stockfish. 
 
 ## Capturas de Tela
 
 <div style="display: flex; flex-direction: row;">
-  <img src="src/images/screenshot1.png" alt="Captura de Tela 1" width="400" height="570">
-  <img src="src/images/screenshot2.png" alt="Captura de Tela 2" width="400" height="570">
+  <img src="assets/images/tabuleiro-organizado.png" alt="Tabuleiro organizado" width="400" height="570">
+  <img src="assets/images/tabuleiro-jogado.png" alt="Tabuleiro com jogada" width="400" height="570">
 </div>
 
 
@@ -25,26 +25,26 @@ Este é um projeto de xadrez em Python que utiliza a biblioteca Tkinter para a i
 
 1. **Clone o repositório:**
 
-```markdown
+```bash
 git clone https://github.com/JoaoAndrade18/PythonChess.git
 ```
 
 2. **Instale as dependências:**
 
-```markdown
+```bash
 pip install -r requirements.txt
 ```
 
 3. Compile o Stockfish:
 
-```markdown
+```bash
 Em desenvolvimento...
 ```
 
-4. Execute o Main.py
+4. Execute o main.py
 
-```markdown
-python Main.py
+```bash
+python main.py
 ```
 
 ## Como Jogar - Botões e Recursos
@@ -79,6 +79,3 @@ Se você gostaria de contribuir para este projeto, por favor siga as diretrizes 
 ## Licença
 
 Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
-
-
