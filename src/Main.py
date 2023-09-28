@@ -10,7 +10,7 @@ from detect_os import detect_operating_system
 def stockfish_engine():
     os = detect_operating_system()
     if os == "Windows":
-        stockfish_path = ".\\stockfish\\stockfish-windows-x86-64-avx2.exe"
+        stockfish_path = ".\\PythonChess\\stockfish\\stockfish-windows-x86-64-avx2.exe"
     else:
         stockfish_path = "./bin/stockfish"
 
@@ -22,7 +22,7 @@ engine = chess.engine.SimpleEngine.popen_uci(stockfish_engine())
 def chess_images():
     os = detect_operating_system()
     if os == "Windows":
-        chess_images_path = ".\\assets\\pieces\\"
+        chess_images_path = ".\\PythonChess\\assets\\pieces\\"
     else:
         chess_images_path = "./assets/pieces/"
     
