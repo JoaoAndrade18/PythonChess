@@ -22,9 +22,9 @@ engine = chess.engine.SimpleEngine.popen_uci(stockfish_engine())
 def chess_images():
     os = detect_operating_system()
     if os == "Windows":
-        chess_images_path = ".\\PythonChess\\assets\\pieces\\"
+        chess_images_path = ".\\assets\\pieces\\"
     else:
-        chess_images_path = "./PythonChess/assets/pieces/"
+        chess_images_path = "./assets/pieces/"
     
     return chess_images_path
 
