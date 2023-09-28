@@ -8,23 +8,27 @@ from tkinter import ttk
 from detect_os import detect_operating_system
 
 def stockfish_engine():
-    os = detect_operating_system
+    os = detect_operating_system()
     if os == "Windows":
-        stockfish_path = ".\\bin\\stockfish.exe"
+        stockfish_path = ".\\stockfish\\stockfish-windows-x86-64-avx2.exe"
     else:
         stockfish_path = "./bin/stockfish"
 
-    engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
-    return engine
+    
+    return stockfish_path
+
+engine = chess.engine.SimpleEngine.popen_uci(stockfish_engine())
 
 def chess_images():
-    os = detect_operating_system
+    os = detect_operating_system()
     if os == "Windows":
-        chess_images_path = ".\\assets\\pieces\\"
+        chess_images_path = ".\\PythonChess\\assets\\pieces\\"
     else:
-        chess_images_path = "./assets/pieces/"
-
+        chess_images_path = "./PythonChess/assets/pieces/"
+    
     return chess_images_path
+
+images = chess_images()
 
 # Tamanho inicial do tabuleiro
 board_size = 450
@@ -71,7 +75,7 @@ def create_chessboard_image(board, size):
 
             piece = board.piece_at(chess.square(file, 7 - rank))
             if piece is not None:
-                piece_image = Image.open(f".\\Scripts\\TCC_stockfish\\pieces\\{piece.symbol()}_{'white' if piece.color == chess.WHITE else 'black'}.png")
+                piece_image = Image.open(f"{images}{piece.symbol()}_{'white' if piece.color == chess.WHITE else 'black'}.png")
                 piece_image = piece_image.resize((square_size, square_size))
                 image.paste(piece_image, (file * square_size, rank * square_size))
 
