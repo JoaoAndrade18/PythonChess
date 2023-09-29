@@ -10,7 +10,8 @@ from detect_os import detect_operating_system
 def stockfish_engine():
     os = detect_operating_system()
     if os == "Windows":
-        stockfish_path = ".\\PythonChess\\stockfish\\stockfish-windows-x86-64-avx2.exe"
+        # para essa path funcionar precisa estar na pasta do projeto {PythonChess} 
+        stockfish_path = ".\\stockfish\\stockfish-windows-x86-64-avx2.exe"
     else:
         stockfish_path = "./bin/stockfish"
 
@@ -22,7 +23,7 @@ engine = chess.engine.SimpleEngine.popen_uci(stockfish_engine())
 def chess_images():
     os = detect_operating_system()
     if os == "Windows":
-        chess_images_path = ".\\PythonChess\\assets\\pieces\\"
+        chess_images_path = ".\\assets\\pieces\\"
     else:
         chess_images_path = "./assets/pieces/"
     
@@ -376,7 +377,6 @@ mode_frame.pack(fill="x", padx=10, pady=5)
 
 # Botão para alternar entre os modos de jogo (Jogador vs. Máquina e Automático)
 auto_mode_button = create_button(mode_frame, "Jogar Sozinho", toggle_auto_mode)
-suggest_move_button = create_button(mode_frame, "Sugerir Jogada", suggest_best_move)
 auto_move_button = create_button(mode_frame, "Parar jogada automatica", stop_auto_move)
 
 ###################################################################################################
@@ -388,6 +388,7 @@ game_frame = ttk.LabelFrame(root, text="Jogo")
 game_frame.pack(fill="x", padx=10, pady=5)
 
 undo_button = create_button(game_frame, "Desfazer Jogada", undo_last_move)
+suggest_move_button = create_button(game_frame, "Sugerir Jogada", suggest_best_move)
 
 ###################################################################################################
 # Frame para os botões relacionados ao tempo limite
