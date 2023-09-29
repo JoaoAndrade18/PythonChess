@@ -42,6 +42,9 @@ time_limit = 1
 # Variável para controlar o modo de jogo (jogador vs. máquina ou automático)
 auto_mode = False
 
+# variavel para controlar a jogada automatica
+auto_move = True
+
 # Variável global para o tabuleiro
 board = chess.Board()
 
@@ -105,6 +108,9 @@ def restore_board():
     board = chess.Board(initial_fen)
     update_board(board_size)
 
+    # apagar historico de movimentos
+    move_history.clear()
+
 # Função para sair do jogo
 def quit_game():
     engine.quit()
@@ -149,7 +155,10 @@ def submit_player_move():
         print("Movimento inválido. Tente novamente.")
     update_board(board_size)
     if not board.is_game_over():
-        make_computer_move()
+        if auto_move == True:
+            make_computer_move()
+        else:
+            add_to_move_history(move)  # Adicione o movimento ao histórico
 
 # Função para fazer a jogada da máquina
 def make_computer_move():
@@ -238,7 +247,6 @@ def disable_window_close():
 # Função para redirecionar a saída do terminal para a caixa de texto
 def redirect_output():
     import sys
-
     class OutputRedirector(object):
         def __init__(self, text_widget):
             self.text_space = text_widget
@@ -295,7 +303,21 @@ def undo_last_move():
         update_board(board_size)
         position_coordinate_labels()
 
-# Configuração da interface gráfica
+# Função para parar a jogada automatica
+def stop_auto_move():
+    global auto_move
+    auto_move = not auto_move
+    if auto_move is True:
+        auto_move_button.config(text="Parar jogada automatica")
+    if auto_move is False:
+        auto_move_button.config(text="Iniciar jogada automatica")
+
+# Função para criar um botão
+def create_button(frame, text, command):
+    button = ttk.Button(frame, text=text, command=command)
+    button.pack(side="left", padx=5)
+    return button
+
 root = tk.Tk()
 root.title("Xadrez com Stockfish")
 
@@ -316,12 +338,14 @@ player_move_entry.pack()
 # Vincule a função `process_enter` à tecla Enter
 player_move_entry.bind('<Return>', lambda event=None: submit_player_move(), check_for_tool_use(player_move_entry.get()))
 
-
 # Botão para enviar a jogada do jogador
 submit_button = ttk.Button(root, text="Enviar Jogada", command=submit_player_move)
 submit_button.pack()
 
+###################################################################################################
 # Criação do menu de opções
+###################################################################################################
+
 menu = tk.Menu(root)
 root.config(menu=menu)
 
@@ -342,31 +366,56 @@ menu.add_command(label="Histórico de Movimentos", command=show_move_history)
 # Menu Sair do Jogo
 menu.add_command(label="Sair do Jogo", command=quit_game)
 
-# Botões para aumentar e diminuir o tempo limite
-increase_time_button = ttk.Button(root, text="Aumentar Tempo", command=increase_time_limit)
-increase_time_button.pack(side="right")
-decrease_time_button = ttk.Button(root, text="Diminuir Tempo", command=decrease_time_limit)
-decrease_time_button.pack(side="left")
+###################################################################################################
+# Criação dos botões de opções de modo de jogo
+###################################################################################################
 
-# Rótulo para exibir o tempo atual
-time_label = ttk.Label(root, text=f"Tempo Limite da Máquina: {time_limit} segundos")
-time_label.pack(side="bottom")
+# Frame para os botões relacionados ao modo de jogo
+mode_frame = ttk.LabelFrame(root, text="Modo de Jogo")
+mode_frame.pack(fill="x", padx=10, pady=5)
 
 # Botão para alternar entre os modos de jogo (Jogador vs. Máquina e Automático)
-auto_mode_button = ttk.Button(root, text="Jogar Sozinho", command=toggle_auto_mode)
-auto_mode_button.pack(fill="x")
+auto_mode_button = create_button(mode_frame, "Jogar Sozinho", toggle_auto_mode)
+suggest_move_button = create_button(mode_frame, "Sugerir Jogada", suggest_best_move)
+auto_move_button = create_button(mode_frame, "Parar jogada automatica", stop_auto_move)
 
-# botao para sugerir a melhor jogada
-suggest_move_button = ttk.Button(root, text="Sugerir Jogada", command=suggest_best_move)
-suggest_move_button.pack()
+###################################################################################################
+# Criação dos botões de opções de jogo
+###################################################################################################
 
-# Crie uma caixa de texto para exibir os resultados
-output_text = tk.Text(results_window)
-output_text.pack()
+# Frame para os botões relacionados ao jogo
+game_frame = ttk.LabelFrame(root, text="Jogo")
+game_frame.pack(fill="x", padx=10, pady=5)
 
-# Adicione um botão "Desfazer" à interface gráfica
-undo_button = ttk.Button(root, text="Desfazer Jogada", command=undo_last_move)
-undo_button.pack()
+undo_button = create_button(game_frame, "Desfazer Jogada", undo_last_move)
+
+###################################################################################################
+# Frame para os botões relacionados ao tempo limite
+###################################################################################################
+
+# Frame para os botões relacionados ao tempo
+depth = ttk.LabelFrame(root, text="Profundidade de Busca")
+depth.pack(fill="x", padx=10, pady=5)
+
+decrease_time_button = create_button(depth, "Diminuir Tempo", decrease_time_limit)
+increase_time_button = create_button(depth, "Aumentar Tempo", increase_time_limit)
+time_label = ttk.Label(depth, text=f"Tempo de Busca: {time_limit} segundos")
+time_label.pack()
+
+###################################################################################################
+# Frame para a janela de resultados
+###################################################################################################
+
+# Frame para exibir os resultados
+results_frame = ttk.LabelFrame(results_window, text="Resultados")
+results_frame.pack(fill="both", expand=True, padx=10, pady=5)
+
+output_text = tk.Text(results_frame)
+output_text.pack(fill="both", expand=True)
+
+###################################################################################################
+# Chamada de funções
+###################################################################################################
 
 position_coordinate_labels()
 
